@@ -1,0 +1,1 @@
+web: java -jar target/kneadybread-api-0.0.1-jar-with-dependencies.jar -config=conf/application.conf

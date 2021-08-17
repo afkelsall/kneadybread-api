@@ -1,20 +1,32 @@
 package com.kneadybread
 
 import com.google.inject.Guice
-import com.kneadybread.module.MainModule
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
-import com.kneadybread.plugins.*
+import com.kneadybread.app.MainModule
+import com.kneadybread.app.ObjectMapperModule
+import com.kneadybread.plugins.configureHTTP
+import com.kneadybread.plugins.configureSerialization
 import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.locations.*
+import io.ktor.server.netty.*
+import org.slf4j.event.Level
 
 fun main (args: Array<String>) {
-    io.ktor.server.netty.EngineMain.main(args)
+    EngineMain.main(args)
 }
 
 fun Application.main() {
     configureHTTP()
-    configureRouting()
     configureSerialization()
 
-    Guice.createInjector(MainModule(this))
+    install(Locations)
+
+    install(CallLogging) {
+        level = Level.INFO
+    }
+
+    Guice.createInjector(
+        MainModule(this),
+        ObjectMapperModule()
+    )
 }

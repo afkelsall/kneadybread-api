@@ -1,7 +1,12 @@
 {
-  "expo": {
-    "name": "Kneady Bread",
-    "description": "KneadyBread API",
-    "slug": "Slug"
-  }
+  "name": "kneadybread-api",
+  "description": "The API behind the kneadybread.com website",
+  "website": "https://kneadybread.com",
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "image": "heroku/java"
 }

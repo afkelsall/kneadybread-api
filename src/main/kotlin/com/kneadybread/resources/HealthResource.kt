@@ -1,18 +1,18 @@
 package com.kneadybread.resources
 
 import com.google.inject.Inject
-import com.kneadybread.service.PingService
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import java.lang.Appendable
 
-class PingResource @Inject constructor(application: Application, pingService: PingService) {
+class HealthResource @Inject constructor(
+    application: Application
+) {
 
     init {
         application.routing {
-            get("/ping") {
+            get("/healthcheck") {
                 call.respond(HttpStatusCode.OK, "pong")
             }
         }

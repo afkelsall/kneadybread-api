@@ -1,8 +1,10 @@
 package com.kneadybread.app
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.github.afkelsall.dynamodb.DynamoDbAsycClientWrapper
 import com.github.afkelsall.dynamodb.KeyInfo
 import com.google.inject.AbstractModule
+import com.google.inject.Inject
 import com.google.inject.Provides
 import com.google.inject.Singleton
 import com.kneadybread.resources.BakeResource
@@ -35,7 +37,8 @@ class MainModule(private val application: Application): AbstractModule() {
 
     @Provides
     @Singleton
-    fun get(): DynamoDbAsycClientWrapper<String, String> {
+    @Inject
+    fun get(featuredMapper: ObjectMapper): DynamoDbAsycClientWrapper<String, String> {
         return DynamoDbAsycClientWrapper(
             httpClientProvider(),
             Region.US_EAST_2,
@@ -43,6 +46,7 @@ class MainModule(private val application: Application): AbstractModule() {
             "kneadybread",
             KeyInfo.PartitionKeyInfo.StringKey("bakerId"),
             KeyInfo.SortKeyInfo.StringKey("sortKey"),
+            featuredMapper
         )
     }
 

@@ -4,11 +4,10 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.core.JsonToken
-import com.fasterxml.jackson.core.util.VersionUtil
-import com.fasterxml.jackson.databind.*
-import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier
+import com.fasterxml.jackson.databind.DeserializationContext
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
-import com.fasterxml.jackson.databind.jsontype.TypeDeserializer
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer
 import com.fasterxml.jackson.databind.module.SimpleDeserializers
 import com.fasterxml.jackson.databind.module.SimpleModule
@@ -20,13 +19,17 @@ import software.amazon.awssdk.services.dynamodb.model.AttributeValue
 import java.io.IOException
 import java.math.BigDecimal
 
-
-class DynamoDbJacksonModule: SimpleModule(
-    VersionUtil.parseVersion(
-        "2.10.2",
-        "com.gitbub.afkelsall",
-        "dynamodb"
-    )) {
+/**
+ *  Class that registers a serializer and deserializer for the DynamoDB AttributeValue class.
+ *
+ * <pre>
+ * ObjectMapper mapper = new ObjectMapper();
+ * mapper.registerModule(new DynamoDbJacksonModule());
+ * </pre>
+ *
+ *
+ */
+class DynamoDbJacksonModule: SimpleModule() {
 
     override fun setupModule(context: SetupContext) {
         super.setupModule(context)
@@ -42,7 +45,7 @@ class DynamoDbJacksonModule: SimpleModule(
     }
 
 
-//    Json => AttributeValue
+    // Json => AttributeValue
     private class AttributeValueDeserializer: StdDeserializer<AttributeValue>(AttributeValue::class.java) {
 
 
@@ -73,7 +76,7 @@ class DynamoDbJacksonModule: SimpleModule(
 
     }
 
-//    List<AttributeValue> => Json
+    // List<AttributeValue> => Json
     private class AttributeValueSerializer: StdSerializer<AttributeValue>(AttributeValue::class.java) {
         @Throws(IOException::class, JsonProcessingException::class)
 

@@ -27,8 +27,9 @@ class BakeResource @Inject constructor(application: Application, val bakeService
             post<NewBakeLocation> { bakeUser ->
                 val request = call.receive<NewBakeRequest>()
                 bakeService.saveNewBake(bakeUser.user, request)
+                val response = bakeService.getBakeList(bakeUser.user)
                 logger.info{ "Post bake: Got response ready" }
-                call.respond(request)
+                call.respond(HttpStatusCode.OK, response)
             }
 
             get<NewBakeLocation> { bakeUser ->

@@ -16,7 +16,7 @@ class ObjectMapperModule: AbstractModule() {
 
     @Provides
     @Singleton
-    private fun getMapper(): ObjectMapper {
+    fun getMapper(): ObjectMapper {
         return ObjectMapper()
             .registerKotlinModule()
             .enable(SerializationFeature.INDENT_OUTPUT)

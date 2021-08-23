@@ -46,8 +46,6 @@
     <orderEntry type="library" name="Maven: com.typesafe:config:1.3.1" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-reflect:1.5.10" level="project" />
     <orderEntry type="library" name="Maven: io.ktor:ktor-jackson:1.6.1" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.10.2" level="project" />
-    <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-kotlin:2.10.2" level="project" />
     <orderEntry type="library" name="Maven: io.ktor:ktor-server-netty:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: io.ktor:ktor-server-host-common:1.6.1" level="project" />
     <orderEntry type="library" name="Maven: io.ktor:ktor-http-cio-jvm:1.6.1" level="project" />
@@ -98,7 +96,9 @@
     <orderEntry type="library" name="Maven: software.amazon.awssdk:dynamodb-enhanced:2.17.14" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.12.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.12.4" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.12.4" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-core:2.12.4" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-kotlin:2.12.4" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.ktor:ktor-server-tests:1.6.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.ktor:ktor-server-test-host:1.6.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: io.ktor:ktor-network-tls-jvm:1.6.1" level="project" />

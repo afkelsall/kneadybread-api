@@ -1,12 +1,13 @@
 package com.kneadybread.resources
 
 import com.google.inject.Inject
-import com.kneadybread.domain.request.NewBakeRequest
+import com.kneadybread.domain.request.BakeRequest
 import com.kneadybread.service.BakeService
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.locations.*
 import io.ktor.locations.post
+import io.ktor.locations.put
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -24,17 +25,36 @@ class BakeResource @Inject constructor(application: Application, val bakeService
             @Location("/user/{user}/bake")
             data class NewBakeLocation(val user: String)
 
-            post<NewBakeLocation> { bakeUser ->
-                val request = call.receive<NewBakeRequest>()
-                bakeService.saveNewBake(bakeUser.user, request)
+            get<NewBakeLocation> { bakeUser ->
                 val response = bakeService.getBakeList(bakeUser.user)
-                logger.info{ "Post bake: Got response ready" }
+
                 call.respond(HttpStatusCode.OK, response)
             }
 
-            get<NewBakeLocation> { bakeUser ->
+            post<NewBakeLocation> { bakeUser ->
+                val request = call.receive<BakeRequest>()
+
+                bakeService.saveNewBake(bakeUser.user, request)
                 val response = bakeService.getBakeList(bakeUser.user)
-                logger.info{ "Get bakes: Got response ready" }
+
+                call.respond(HttpStatusCode.OK, response)
+            }
+
+
+            @Location("/user/{user}/bake/{bake}")
+            data class BakeLocation(val user: String, val bake: String)
+
+            get<BakeLocation> { bakeLocation ->
+                val response = bakeService.getBake(bakeLocation.user, bakeLocation.bake)
+
+                call.respond(HttpStatusCode.OK, response)
+            }
+
+            put<BakeLocation> { bakeLocation ->
+                val request = call.receive<BakeRequest>()
+
+                val response = bakeService.saveBake(bakeLocation.user, request)
+
                 call.respond(HttpStatusCode.OK, response)
             }
         }

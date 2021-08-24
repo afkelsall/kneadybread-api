@@ -5,3 +5,7 @@ class SortKeyPrefixes {
         const val BakeSortKey = "Bakes_"
     }
 }
+
+fun String.addPrefix(prefix: String): String {
+    return prefix + this
+}

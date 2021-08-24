@@ -2,10 +2,10 @@ package com.kneadybread.domain.request
 
 import java.time.ZonedDateTime
 
-data class NewBakeRequest(
+data class BakeRequest(
     val name: String,
     val description: String,
-    val date: KneadyDate,
+    val date: KneadyDate
 )
 
 data class KneadyDate (

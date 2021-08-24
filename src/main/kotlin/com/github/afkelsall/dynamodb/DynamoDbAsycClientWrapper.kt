@@ -142,7 +142,9 @@ class DynamoDbAsycClientWrapper<P: Any,S: Any> (
 
         val queryResult = client.query(queryRequest)
 
-        return mapper.convertValue(queryResult.join().items(), object: TypeReference<List<T>>(){})
+        val out = mapper.typeFactory.constructCollectionType(ArrayList::class.java, classOut.java)
+
+        return mapper.convertValue(queryResult.join().items(), out)
     }
 
 

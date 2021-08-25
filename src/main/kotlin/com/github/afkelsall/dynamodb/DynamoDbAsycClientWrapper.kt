@@ -1,6 +1,5 @@
 package com.github.afkelsall.dynamodb
 
-import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.github.afkelsall.dynamodb.KeyInfo.PartitionKeyInfo
@@ -76,7 +75,7 @@ class DynamoDbAsycClientWrapper<P: Any,S: Any> (
         return getRecord(partitionKey, sortKey, T::class)
     }
 
-    fun <T : Any> getRecord(partitionKey: P, sortKey: S? = null, classOut: KClass<T>): T {
+    fun <T : Any> getRecord(partitionKey: P, sortKey: S? = null, resultClassType: KClass<T>): T {
         val searchKeys = AttributeSearchQueryBuilder<P,S>()
             .addPrimaryKeySearch(partitionKey, partitionKeyAttributeName)
             .addSortKeySearch(sortKey, sortKeyAttributeName)
@@ -88,9 +87,8 @@ class DynamoDbAsycClientWrapper<P: Any,S: Any> (
             .build()
 
         val item = client.getItem(getItemRequest)
-        item.join().item()
 
-        return mapper.convertValue(item.join().item(), classOut.java)
+        return mapper.convertValue(item.join().item(), resultClassType.java)
     }
 
 
@@ -128,7 +126,7 @@ class DynamoDbAsycClientWrapper<P: Any,S: Any> (
     private fun <T : Any> queryRecords(
         partitionKey: AttributeSearch.PartitionKeySearch<P>,
         sortKey: AttributeSearch<S>?,
-        classOut: KClass<T>
+        resultClassType: KClass<T>
     ): List<T> {
         val searchKeys = AttributeSearchQueryBuilder<P,S>()
             .addPrimaryKeySearch(partitionKey)
@@ -142,9 +140,9 @@ class DynamoDbAsycClientWrapper<P: Any,S: Any> (
 
         val queryResult = client.query(queryRequest)
 
-        val out = mapper.typeFactory.constructCollectionType(ArrayList::class.java, classOut.java)
+        val outputCollectionType = mapper.typeFactory.constructCollectionType(ArrayList::class.java, resultClassType.java)
 
-        return mapper.convertValue(queryResult.join().items(), out)
+        return mapper.convertValue(queryResult.join().items(), outputCollectionType)
     }
 
 

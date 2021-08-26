@@ -14,9 +14,6 @@ class BakeDao @Inject constructor(@Named("kneadybread") private val client: Dyna
     }
 
     fun getBakeList(user: String): List<BakeDb> {
-//        val out = jacksonTypeRef<List<BakeDb>>()
-//        val values = listOf(AttributeValueBuilder.string("kk"))
-//    DynamoDbObjectMapper().getMapper().convertValue(values, out)
         return client.queryRecords(user, sortKeyBeginsWith(SortKeyPrefixes.BakeSortKey))
     }
 

@@ -12,6 +12,10 @@ class HealthResource @Inject constructor(
 
     init {
         application.routing {
+            get("/ping") {
+                call.respond(HttpStatusCode.OK, "pong")
+            }
+
             get("/healthcheck") {
                 call.respond(HttpStatusCode.OK, "pong")
             }

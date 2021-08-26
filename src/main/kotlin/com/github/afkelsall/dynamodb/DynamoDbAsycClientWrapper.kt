@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.convertValue
 import com.github.afkelsall.dynamodb.KeyInfo.PartitionKeyInfo
 import com.github.afkelsall.dynamodb.KeyInfo.SortKeyInfo
-import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider
 import software.amazon.awssdk.http.async.SdkAsyncHttpClient
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient
@@ -16,7 +16,7 @@ import kotlin.reflect.KClass
 class DynamoDbAsycClientWrapper<P: Any,S: Any> (
     private val asyncHttpClient: SdkAsyncHttpClient,
     private val region: Region,
-    private val profileName: String,
+    private val awsCredentialsProvider: AwsCredentialsProvider,
     private val tableName: String,
     private val partitionKeyAttributeName: PartitionKeyInfo<P>,
     private val sortKeyAttributeName: SortKeyInfo<S>,
@@ -29,7 +29,7 @@ class DynamoDbAsycClientWrapper<P: Any,S: Any> (
     init {
         val clientBuilder = DynamoDbAsyncClient.builder()
             .httpClient(asyncHttpClient)
-            .credentialsProvider(ProfileCredentialsProvider.builder().profileName(profileName).build())
+            .credentialsProvider(awsCredentialsProvider)
 
         if (uriOverride != null)
             clientBuilder.endpointOverride(uriOverride)

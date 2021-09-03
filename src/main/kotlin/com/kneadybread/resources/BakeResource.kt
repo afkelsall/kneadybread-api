@@ -57,6 +57,14 @@ class BakeResource @Inject constructor(application: Application, val bakeService
 
                 call.respond(HttpStatusCode.OK, response)
             }
+
+            delete<BakeLocation> { bakeLocation ->
+//                val request = call.receive<BakeRequest>()
+
+                bakeService.deleteBake(bakeLocation.user, bakeLocation.bake)
+
+                call.respond(HttpStatusCode.OK)
+            }
         }
     }
 }

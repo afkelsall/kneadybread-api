@@ -21,8 +21,12 @@ class BakeDao @Inject constructor(@Named("kneadybread") private val client: Dyna
         return client.getRecord(user, bakeId)
     }
 
-    fun updateBake(user: String, bakeDb: BakeDb) {
+    fun updateBake(bakeDb: BakeDb) {
         client.putRecord(bakeDb)
+    }
+
+    fun deleteBake(user: String, bake: String) {
+        client.deleteRecord(user, bake)
     }
 
 }

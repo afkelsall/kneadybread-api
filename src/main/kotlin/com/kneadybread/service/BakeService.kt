@@ -21,20 +21,23 @@ class BakeService @Inject constructor(private val userDao: UserDao, private val 
 
     fun getBakeList(user: String): List<Bake> {
         val out = bakeDao.getBakeList(user)
-        val outMap = out.map { Bake.from(it) }
-        return outMap
+        return out.map { Bake.from(it) }
     }
 
     fun saveBake(user: String, bakeRequest: BakeRequest): BakeRequest {
         val bakeDb = BakeDb.newBakeFrom(user, bakeRequest)
 
-        bakeDao.updateBake(user, bakeDb)
+        bakeDao.updateBake(bakeDb)
         return bakeRequest
     }
 
     fun getBake(user: String, bakeId: String): Bake {
         val bakeDb = bakeDao.getBake(user, bakeId.addPrefix(SortKeyPrefixes.BakeSortKey))
         return Bake.from(bakeDb)
+    }
+
+    fun deleteBake(user: String, bakeId: String) {
+        bakeDao.deleteBake(user, bakeId.addPrefix(SortKeyPrefixes.BakeSortKey))
     }
 
 }

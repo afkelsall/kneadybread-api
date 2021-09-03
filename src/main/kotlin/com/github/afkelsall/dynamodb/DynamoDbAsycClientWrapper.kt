@@ -145,7 +145,22 @@ class DynamoDbAsycClientWrapper<P: Any,S: Any> (
         return mapper.convertValue(queryResult.join().items(), outputCollectionType)
     }
 
+    fun deleteRecord(partitionKey: P, sortKey: S? = null) {
 
+        val searchKeys = AttributeSearchQueryBuilder<P,S>()
+            .addPrimaryKeySearch(AttributeSearch.PartitionKeySearch(partitionKey, partitionKeyAttributeName))
+            .addSortKeySearch(sortKey?.let { AttributeSearch.SortKeySearch(sortKey, sortKeyAttributeName) })
+
+        val deleteItemRequest = DeleteItemRequest.builder()
+            .tableName(tableName)
+            .key(searchKeys.buildGetValues())
+            .build()
+
+        val queryResult = client.deleteItem(deleteItemRequest)
+
+        queryResult.join()
+        return
+    }
 
 
 }

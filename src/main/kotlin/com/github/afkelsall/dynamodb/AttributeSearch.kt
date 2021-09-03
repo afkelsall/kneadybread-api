@@ -36,10 +36,11 @@ sealed class AttributeSearch<T: Any>(private val matchesValue: T, val keyInfo: K
     }
 
     open fun getSearchQuery(): String = "${keyInfo.keyName} = :${keyInfo.keyName}"
+    open fun getSearchPair(): Pair<String, AttributeValue> = keyInfo.keyName to getAttributeValue()
 
     class PartitionKeySearch<P: Any>(matchesString: P, keyInfo: KeyInfo.PartitionKeyInfo<P>): AttributeSearch<P>(matchesString, keyInfo)
 
-    class SortKeySearch<S: Any>(matchesString: S, keyInfo: KeyInfo.SortKeyInfo<S>): AttributeSearch<S>(matchesString, keyInfo) {}
+    class SortKeySearch<S: Any>(matchesString: S, keyInfo: KeyInfo.SortKeyInfo<S>): AttributeSearch<S>(matchesString, keyInfo)
 
     class SortKeyBeginsWith<S: Any>(beginsWithString: S, keyInfo: KeyInfo.SortKeyInfo<S>): AttributeSearch<S>(beginsWithString, keyInfo) {
         override fun getSearchQuery(): String = "begins_with (${keyInfo.keyName}, :${keyInfo.keyName})"

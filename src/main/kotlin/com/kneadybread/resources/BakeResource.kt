@@ -1,6 +1,7 @@
 package com.kneadybread.resources
 
 import com.google.inject.Inject
+import com.kneadybread.domain.request.BakeDetailsRequest
 import com.kneadybread.domain.request.BakeRequest
 import com.kneadybread.service.BakeService
 import io.ktor.application.*
@@ -32,7 +33,7 @@ class BakeResource @Inject constructor(application: Application, val bakeService
             }
 
             post<NewBakeLocation> { bakeUser ->
-                val request = call.receive<BakeRequest>()
+                val request = call.receive<BakeDetailsRequest>()
 
                 bakeService.saveNewBake(bakeUser.user, request)
                 val response = bakeService.getBakeList(bakeUser.user)
@@ -45,17 +46,31 @@ class BakeResource @Inject constructor(application: Application, val bakeService
             data class BakeLocation(val user: String, val bake: String)
 
             get<BakeLocation> { bakeLocation ->
+                logger.info { "incoming" }
                 val response = bakeService.getBake(bakeLocation.user, bakeLocation.bake)
 
                 call.respond(HttpStatusCode.OK, response)
             }
 
             put<BakeLocation> { bakeLocation ->
-                val request = call.receive<BakeRequest>()
+                val request = call.receive<BakeDetailsRequest>()
 
                 val response = bakeService.saveBake(bakeLocation.user, request)
 
                 call.respond(HttpStatusCode.OK, response)
+            }
+
+            post<BakeLocation> { bakeLocation ->
+
+                try {
+                    val request = call.receive<BakeRequest>()
+
+                    val response = bakeService.updateBake(bakeLocation.user, bakeLocation.bake, request)
+
+                    call.respond(HttpStatusCode.OK, response)
+                } catch (e: Exception) {
+                    logger.error({ "Errored" }, e)
+                }
             }
 
             delete<BakeLocation> { bakeLocation ->
